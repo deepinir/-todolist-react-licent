@@ -5,7 +5,9 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px solid #fff;
+  color: #fff;
+  font-weight: 500;
 }
 
 .main {
