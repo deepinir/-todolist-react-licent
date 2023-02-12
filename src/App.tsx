@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import Layout from "./components/layout/Layout";
+import Layout from "./components/Layout";
 
 const routes = [
   { path: "/", element: <Home /> },

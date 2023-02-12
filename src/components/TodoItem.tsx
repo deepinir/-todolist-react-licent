@@ -1,19 +1,19 @@
 import React from "react";
-import styles from "./todoitem.module.css";
 import clsx from "clsx";
 
 interface IProps {
-  id: string | number;
-  text: string;
+  id: number;
+  description: string;
   checked: boolean;
-  onEdit?: (id: string | number) => void;
-  onDelete?: (id: string | number) => void;
-  onChangeChecked?: (id: string | number) => void;
+  onEdit?: (id: number, description: string) => void;
+  onDelete?: (id: number) => void;
+  onChangeChecked?: (id: number, checked: boolean) => void;
 }
 
 export default function TodoItem(props: IProps) {
+
   const [showTaskMenu, setShowTaskMenu] = React.useState(false);
-  const { id, text, checked, onEdit, onDelete, onChangeChecked } = props;
+  const { id, description, checked, onEdit, onDelete, onChangeChecked } = props;
   const settingsElRef = React.useRef<null | HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -26,22 +26,36 @@ export default function TodoItem(props: IProps) {
     return () => document.removeEventListener("click", listener);
   }, []);
 
+  const handleDelete = () => {
+    setShowTaskMenu(false);
+    onDelete?.(id);
+  };
+
+  const handleEdit = () => {
+    setShowTaskMenu(false);
+    onEdit?.(id, description);
+  };
+
   return (
-    <li className={styles.task}>
-      <label onClick={() => onChangeChecked?.(id)}>
-        <input type="checkbox" />
-        <p className={clsx(checked && styles.checked)}>{text}</p>
+    <li className="task">
+      <label>
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => onChangeChecked?.(id, e.target.checked)}
+        />
+        <p className={clsx(checked && "checked")}>{description}</p>
       </label>
-      <div className={styles.settings} ref={settingsElRef}>
+      <div className="settings" ref={settingsElRef}>
         <i
           className="uil uil-ellipsis-h"
           onClick={() => setShowTaskMenu((prev) => !prev)}
         ></i>
-        <ul className={clsx(styles["task-menu"], showTaskMenu && styles.show)}>
-          <li onClick={() => onEdit?.(id)}>
+        <ul className={clsx("task-menu", showTaskMenu && "show")}>
+          <li onClick={handleEdit}>
             <i className="uil uil-pen"></i>Edit
           </li>
-          <li onClick={() => onDelete?.(id)}>
+          <li onClick={handleDelete}>
             <i className="uil uil-trash"></i>Delete
           </li>
         </ul>
